@@ -1,0 +1,171 @@
+* { margin: 0; }
+
+body {
+	background: #333;
+	color: #FFF;
+	font-family: share-regular, sans-serif;
+}
+
+header {
+	color: #DDD;
+	width: 420px;
+	min-height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+	margin: 50px auto 20px auto;
+	background: url('photon_icon.png') no-repeat;
+	background-position: right center;
+}
+
+h1, h2 {
+	font-weight: normal;
+}
+
+a {
+	color: #BBB;
+	border: none;
+	text-decoration: none;
+	transition: color .2s ease-in-out;
+}
+a:hover { color: #EEE; }
+
+#album  {
+	width: 420px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: 0;
+	-webkit-column-count: 1;
+    -moz-column-count: 1;
+	column-count: 1;
+    -webkit-column-gap: 20px;
+    -moz-column-gap: 20px;
+	column-gap: 20px;
+}
+
+@media (min-width: 870px) {
+	header { width: 850px; }
+	#album {
+		width: 850px;
+		-webkit-column-count: 2;
+		-moz-column-count: 2;
+		column-count: 2;
+	}
+}
+
+@media (min-width: 1290px) {
+	header { width: 1270px; }
+	#album {
+		width: 1270px;
+		-webkit-column-count: 3;
+		-moz-column-count: 3;
+		column-count: 3;
+	}
+}
+
+@media (min-width: 1710px) {
+	header { width: 1690px; }
+	#album {
+		width: 1690px;
+		-webkit-column-count: 4;
+		-moz-column-count: 4;
+		column-count: 4;
+	}
+}
+
+@media (min-width: 2130px) {
+	header { width: 2110px; }
+	#album {
+		width: 2110px;
+		-webkit-column-count: 5;
+		-moz-column-count: 5;
+		column-count: 5;
+	}
+}
+
+@media (min-width: 2550px) {
+	header { width: 2530px; }
+	#album {
+		width: 2530px;
+		-webkit-column-count: 6;
+		-moz-column-count: 6;
+		column-count: 6;
+	}
+}
+
+#album div {
+	position: relative;
+	height: auto !important;
+	width: 400px !important;
+	margin-bottom: 15px;
+	padding: 5px;
+	background: #FFF;
+	display: inline-block;
+	border: 1px solid #000;
+	box-shadow: inset 0px 0px 10px 1px rgba(0, 0, 0, 0.5);
+}
+
+#album div img {
+	height: auto !important;
+	width: 400px !important;
+	margin: 0;
+}
+
+#album div p {
+	position: absolute;
+	opacity: 0.0;
+	bottom: 0;
+	left: 0;
+	background-color:rgba(0, 0, 0, 0.5);
+	margin: 5px;
+	padding: 5px;
+	width: 390px;
+	line-height: 20px;
+	transition: opacity .5s ease-in-out;
+}
+
+#album div:hover p {
+	opacity: 1.0;
+}
+
+header p a {
+	line-height: 40px;
+	margin-right: 20px;
+}
+header p a.activeAlbum {
+	text-decoration: underline;
+	color: #EEE;
+}
+
+#photoOverlay {
+	display: none;
+	background: rgba(0, 0, 0, 0.8);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.0;
+	transition: opacity .5s ease-in-out width .5s ease-in-out height .5s ease-in-out;
+}
+
+#photoOverlay.visible {
+	display: block;
+	opacity: 1.0;
+}
+
+#photoOverlay a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+#photoOverlay a img {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	height: 90%;
+	width: auto;
+}
