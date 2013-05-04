@@ -5,13 +5,20 @@ var http = require('http'),
 
 // Configuration:
 var config = {
-	origin: 'http://holo.codexfons.net',
+	origin: 'http://photo.codexfons.com',
 	urlBase: this.origin + '/photon',
 	port: 9000,
-	albumBase: 'data'
+	albumBase: 'data',
+	persistData: true
 };
 
 var albums = {};
+
+function evalDivision(term) {
+	var parts = term.split('/');
+	if (parts.length < 2) return parseInt(parts[0]);
+	return parseInt(parts[0]) / parseInt(parts[1]);
+}
 
 function _updateAlbumPhotos(albumName, callback) {
 	var albumPath = config.albumBase + '/' + albumName;
@@ -46,9 +53,10 @@ function _updateAlbumPhotos(albumName, callback) {
 			else {
 				albums[albumName].photos[id].width = metadata.exif.imageWidth;
 				albums[albumName].photos[id].height = metadata.exif.imageLength;
-				albums[albumName].photos[id].aperture = 'f/' + eval(metadata.exif.fNumber);
+				albums[albumName].photos[id].aperture = 'f/' + evalDivision(metadata.exif.fNumber);
 				albums[albumName].photos[id].iso = metadata.exif.isoSpeedRatings;
 				albums[albumName].photos[id].exposure = metadata.exif.exposureTime;
+				albums[albumName].photos[id].focalLength = evalDivision(metadata.exif.focalLength);
 				albums[albumName].photos[id].camera = metadata.exif.model;
 				albums[albumName].photos[id].createdAt = metadata.exif.dateTimeOriginal;
 			}
@@ -107,7 +115,7 @@ function getAlbums(callback) {
 	}
 
 	// Write to file if changes were made
-	if (dirtyFlag) {
+	if (dirtyFlag && config.persistData) {
 		fs.writeFile('cache.dat', JSON.stringify(albums));
 	}
 
@@ -123,7 +131,7 @@ exports.createRouter = function () {
 
 	router.path(/\/album/, function () {
 		var headers = {
-			"Access-Control-Allow-Origin": "http://holo.codexfons.net"
+			"Access-Control-Allow-Origin": config.origin
 		};
 
 		// GET /album (album list)
@@ -150,7 +158,7 @@ exports.createRouter = function () {
 
 exports.createServer = function () {
 	// Try to load archived album data, then update (or rebuild) it.
-	if (fs.readdirSync('.').indexOf('cache.dat') > -1) {
+	if (config.persistData && fs.readdirSync('.').indexOf('cache.dat') > -1) {
 		albums = JSON.parse(fs.readFileSync('cache.dat'));
 	}
 	getAlbums();

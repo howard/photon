@@ -50,13 +50,15 @@ function init() {
 
 		for (var key in photos) {
 			var elem = document.createElement('div');
+			var createdAt = new Date(photos[key].createdAt);
 			elem.innerHTML = '\
 				<a href="#' + albumName + '/' + key + '">\
 					<p>Aperture: ' + photos[key].aperture +
 						'&#x3000;ISO: ' + photos[key].iso +
 						'&#x3000;Exposure: ' + photos[key].exposure + 
-						'<br>Camera: ' + photos[key].camera + 
-						'&#x3000;Date: ' + photos[key].createdAt + 
+						'<br>Focal length: ' + photos[key].focalLength + 'mm' +
+						'&#x3000;Camera: ' + photos[key].camera + 
+						'<br>Date: ' + createdAt.toString().split('(')[0] + 
 					'</p>\
 					<img src="data/' + albumName + '/_resized_' + photos[key].name + '.jpg">\
 				</a>';
@@ -73,14 +75,15 @@ function init() {
 						<img src="data/' + albumName + '/' + photo.fileName + '">\
 					</a>';
 				var imageElem = photoElem.children[0].children[0];
-				// Scale image according to orientation
-				if (photo.width < photo.height) {
-					imageElem.style.width = '90%';
-					imageElem.style.height = 'auto';
-				} else {
-					imageElem.style.width = 'auto';
-					imageElem.style.height = '90%';
-				}
+				imageElem.onload = function () {
+					// Scale image according to orientation
+					if (imageElem.width > imageElem.height) {
+						imageElem.className = 'landscape';
+					} else {
+						imageElem.className = 'portrait';
+					}
+					imageElem.style.display = 'block';
+				};
 				photoElem.className = 'visible';
 			}				
 		} else {

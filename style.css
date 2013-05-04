@@ -29,6 +29,12 @@ a {
 }
 a:hover { color: #EEE; }
 
+footer {
+	width: 420px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 #album  {
 	width: 420px;
 	margin-left: auto;
@@ -43,7 +49,7 @@ a:hover { color: #EEE; }
 }
 
 @media (min-width: 870px) {
-	header { width: 850px; }
+	header, footer { width: 850px; }
 	#album {
 		width: 850px;
 		-webkit-column-count: 2;
@@ -53,7 +59,7 @@ a:hover { color: #EEE; }
 }
 
 @media (min-width: 1290px) {
-	header { width: 1270px; }
+	header, footer { width: 1270px; }
 	#album {
 		width: 1270px;
 		-webkit-column-count: 3;
@@ -63,7 +69,7 @@ a:hover { color: #EEE; }
 }
 
 @media (min-width: 1710px) {
-	header { width: 1690px; }
+	header, footer { width: 1690px; }
 	#album {
 		width: 1690px;
 		-webkit-column-count: 4;
@@ -73,7 +79,7 @@ a:hover { color: #EEE; }
 }
 
 @media (min-width: 2130px) {
-	header { width: 2110px; }
+	header, footer { width: 2110px; }
 	#album {
 		width: 2110px;
 		-webkit-column-count: 5;
@@ -83,7 +89,7 @@ a:hover { color: #EEE; }
 }
 
 @media (min-width: 2550px) {
-	header { width: 2530px; }
+	header, footer { width: 2530px; }
 	#album {
 		width: 2530px;
 		-webkit-column-count: 6;
@@ -160,12 +166,20 @@ header p a.activeAlbum {
 }
 
 #photoOverlay a img {
+	display: none;
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	margin: auto;
+}
+
+img.portrait {
 	height: 90%;
 	width: auto;
+}
+img.landscape {
+	width: 90%;
+	height: auto;
 }
