@@ -36,8 +36,10 @@ function init() {
 				elem.className = 'activeAlbum';
 			}
 			elem.href = '#' + albums[i];
-			elem.innerHTML = albums[i].replace(/_/g, ' ');
+			elem.innerHTML = albums[i].replace(/_/g, '&nbsp;');
 			nav.appendChild(elem);
+			// Space between links to allow proper line breaks
+			nav.appendChild(document.createTextNode(' '));
 		}
 	});
 	
@@ -55,8 +57,8 @@ function init() {
 				<a href="#' + albumName + '/' + key + '">\
 					<p>Aperture: ' + photos[key].aperture +
 						'&#x3000;ISO: ' + photos[key].iso +
-						'&#x3000;Exposure: ' + photos[key].exposure + 
-						'<br>Focal length: ' + photos[key].focalLength + 'mm' +
+						'&#x3000;Exposure: ' + photos[key].exposure + ' sec.' + 
+						'<br>Focal length: ' + photos[key].focalLength + ' mm' +
 						'&#x3000;Camera: ' + photos[key].camera + 
 						'<br>Date: ' + createdAt.toString().split('(')[0] + 
 					'</p>\
