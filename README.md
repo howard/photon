@@ -4,6 +4,8 @@ Photon
 A minimalist filesystem-based photo gallery.
 Works well with modern browsers for desktop and mobile.
 
+This software may be used according to the terms of the BSD license.
+
 Check out the [demo](http://photo.codexfons.com/).
 
 
