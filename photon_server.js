@@ -6,7 +6,6 @@ var http = require('http'),
 // Configuration:
 var config = {
 	origin: 'http://photo.codexfons.com',
-	urlBase: this.origin + '/photon',
 	port: 9000,
 	albumBase: 'data',
 	persistData: true
