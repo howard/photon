@@ -43,9 +43,8 @@ function init() {
 		}
 	});
 	
-
+	var albumElem = document.getElementById('album');		
 	getAlbum(albumName, function () {
-		var albumElem = document.getElementById("album");
 		albumElem.innerHTML = '';
 		currentAlbum = JSON.parse(this.responseText);
 		var photos = currentAlbum.photos;
@@ -70,6 +69,9 @@ function init() {
 		// Show selected photo, if necessary
 		var photoElem = document.getElementById('photoOverlay');
 		if (path.length > 1) {
+			// Blur album
+			albumElem.className = 'hidden';
+
 			var photo = photos[path[1]];
 			if (photo) {
 				photoElem.innerHTML = '\
@@ -89,6 +91,7 @@ function init() {
 				photoElem.className = 'visible';
 			}				
 		} else {
+			albumElem.className = '';
 			photoElem.innerHTML = '';
 			photoElem.className = '';
 			document.body.scrollTop = scrollPosition;

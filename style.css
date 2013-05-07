@@ -41,11 +41,16 @@ footer {
 	margin-right: auto;
 	line-height: 0;
 	-webkit-column-count: 1;
-    -moz-column-count: 1;
+	-moz-column-count: 1;
 	column-count: 1;
-    -webkit-column-gap: 20px;
-    -moz-column-gap: 20px;
+	-webkit-column-gap: 20px;
+	-moz-column-gap: 20px;
 	column-gap: 20px;
+}
+
+#album.hidden {
+	-webkit-filter: blur(10px);
+	filter: blur(10px);
 }
 
 @media (min-width: 870px) {
