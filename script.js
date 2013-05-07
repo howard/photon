@@ -1,5 +1,6 @@
 var albums = [];
 var currentAlbum;
+var currentPhoto;
 var scrollPosition = 0; // for restore when leaving detail view
 
 function get(url, callback) {
@@ -15,6 +16,34 @@ function getAlbums(callback) {
 
 function getAlbum(id, callback) {
 	get('/album/' + id, callback);
+}
+
+function doKeyNavigation(e) {
+	console.log(currentPhoto);
+	console.log(e.keyCode);
+	if (currentPhoto) {
+		var photoNames = Object.keys(currentAlbum.photos)
+		var photoIndex = photoNames.indexOf(currentPhoto.name);
+		switch (e.keyCode) {
+		case 27: // ESC
+			window.location.hash = '#' + currentAlbum.name;
+			break;
+		case 37: // arrow left
+			if (photoIndex >= 1) {
+				window.location.hash = '#' + currentAlbum.name + '/'
+					+ currentAlbum.photos[photoNames[photoIndex - 1]].name;
+			}
+			break;
+		case 39: // arrow right
+			if (photoIndex < photoNames.length - 1) {
+				window.location.hash = '#' + currentAlbum.name + '/'
+					+ currentAlbum.photos[photoNames[photoIndex + 1]].name;
+			}
+			break;
+		}
+		return false;
+	}
+	return true;
 }
 
 function init() {
@@ -72,11 +101,11 @@ function init() {
 			// Blur album
 			albumElem.className = 'hidden';
 
-			var photo = photos[path[1]];
-			if (photo) {
+			currentPhoto = photos[path[1]];
+			if (currentPhoto) {
 				photoElem.innerHTML = '\
 					<a href="#' + albumName + '">\
-						<img src="data/' + albumName + '/' + photo.fileName + '">\
+						<img src="data/' + albumName + '/' + currentPhoto.fileName + '">\
 					</a>';
 				var imageElem = photoElem.children[0].children[0];
 				imageElem.onload = function () {
@@ -91,6 +120,7 @@ function init() {
 				photoElem.className = 'visible';
 			}				
 		} else {
+			currentPhoto = undefined;
 			albumElem.className = '';
 			photoElem.innerHTML = '';
 			photoElem.className = '';
@@ -102,3 +132,4 @@ function init() {
 init();
 window.onhashchange = init;
 window.onscroll = function () { scrollPosition = document.body.scrollTop; };
+window.onkeyup = doKeyNavigation;
