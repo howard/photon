@@ -3,6 +3,8 @@ var currentAlbum;
 var currentPhoto;
 var scrollPosition = 0; // for restore when leaving detail view
 
+var photoElem = document.getElementById('photoOverlay');
+
 function get(url, callback) {
 	var r = new XMLHttpRequest();
 	r.onload = callback;
@@ -18,32 +20,43 @@ function getAlbum(id, callback) {
 	get('/album/' + id, callback);
 }
 
-function doKeyNavigation(e) {
-	console.log(currentPhoto);
-	console.log(e.keyCode);
-	if (currentPhoto) {
-		var photoNames = Object.keys(currentAlbum.photos)
-		var photoIndex = photoNames.indexOf(currentPhoto.name);
-		switch (e.keyCode) {
-		case 27: // ESC
-			window.location.hash = '#' + currentAlbum.name;
-			break;
-		case 37: // arrow left
-			if (photoIndex >= 1) {
-				window.location.hash = '#' + currentAlbum.name + '/'
-					+ currentAlbum.photos[photoNames[photoIndex - 1]].name;
-			}
-			break;
-		case 39: // arrow right
-			if (photoIndex < photoNames.length - 1) {
-				window.location.hash = '#' + currentAlbum.name + '/'
-					+ currentAlbum.photos[photoNames[photoIndex + 1]].name;
-			}
-			break;
-		}
-		return false;
+function previousPhoto() {
+	var photoNames = Object.keys(currentAlbum.photos)
+	var photoIndex = photoNames.indexOf(currentPhoto.name);
+	if (currentPhoto && (photoIndex >= 1)) {
+		window.location.hash = '#' + currentAlbum.name + '/'
+			+ currentAlbum.photos[photoNames[photoIndex - 1]].name;
 	}
-	return true;
+}
+
+function nextPhoto() {
+	var photoNames = Object.keys(currentAlbum.photos)
+	var photoIndex = photoNames.indexOf(currentPhoto.name);
+	if (currentPhoto && (photoIndex < photoNames.length - 1)) {
+		window.location.hash = '#' + currentAlbum.name + '/'
+			+ currentAlbum.photos[photoNames[photoIndex + 1]].name;
+	}
+}
+
+function closeOverlay() {
+	if (currentPhoto) {
+		window.location.hash = '#' + currentAlbum.name;
+	}
+}
+
+function doKeyNavigation(e) {
+	switch (e.keyCode) {
+	case 27: // ESC
+		closeOverlay();
+		break;
+	case 37: // arrow left
+		previousPhoto();
+		break;
+	case 39: // arrow right
+		nextPhoto();
+		break;
+	}
+	return false;
 }
 
 function init() {
@@ -96,7 +109,6 @@ function init() {
 		}
 
 		// Show selected photo, if necessary
-		var photoElem = document.getElementById('photoOverlay');
 		if (path.length > 1) {
 			// Blur album
 			albumElem.className = 'hidden';
@@ -133,3 +145,6 @@ init();
 window.onhashchange = init;
 window.onscroll = function () { scrollPosition = document.body.scrollTop; };
 window.onkeyup = doKeyNavigation;
+Hammer(photoElem).on('swipeleft', function () { nextPhoto(); });
+Hammer(photoElem).on('swiperight', function () { previousPhoto(); });
+
